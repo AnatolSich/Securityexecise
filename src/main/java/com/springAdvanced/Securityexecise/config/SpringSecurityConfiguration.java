@@ -12,27 +12,26 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
-	
-	@Autowired
-	CustomUserDetailsService userDetailsService;
-	
-	public PasswordEncoder passwordEncoder(){
-		return new BCryptPasswordEncoder();
-	}
-	
-	@Override
-	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-	}
-	
-	@Override
-	public void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable()
-		.authorizeRequests().antMatchers("/helloadmin").hasRole("ADMIN")
-		.antMatchers("/hellouser").hasAnyRole("USER","ADMIN")
-		.and().httpBasic();
-	}
 
+    @Autowired
+    CustomUserDetailsService userDetailsService;
+
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    }
+
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable()
+                .authorizeRequests().antMatchers("/helloadmin").hasRole("BOOKING_MANAGER")
+                .antMatchers("/hellouser").hasAnyRole("RESGISTERED_USER", "BOOKING_MANAGER")
+                .and().httpBasic();
+    }
 
 
 }

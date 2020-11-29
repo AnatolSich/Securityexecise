@@ -5,17 +5,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ResourceController {
-	
-	@RequestMapping("/hellouser")
-	public String getUser()
-	{
-		return "Hello User";
-	}
-	
-	@RequestMapping("/helloadmin")
-	public String getAdmin()
-	{
-		return "Hello Admin";
-	}
+
+    @RequestMapping("/hellouser")
+    public String getUser() {
+        return "Hello User";
+    }
+
+    @RequestMapping("/helloadmin")
+    public String getAdmin() {
+        return "Hello Admin";
+    }
 
 }
