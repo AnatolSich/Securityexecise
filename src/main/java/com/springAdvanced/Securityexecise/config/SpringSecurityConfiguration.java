@@ -30,8 +30,8 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                     //Доступ только для не зарегистрированных пользователей
                     .antMatchers("/registration").not().fullyAuthenticated()
                     //Доступ только для пользователей с ролью Администратор
-                    .antMatchers("/admin/**").hasRole("ADMIN")
-                    .antMatchers("/news").hasRole("USER")
+                    .antMatchers("/admin/**").hasRole("BOOKING_USER")
+                    .antMatchers("/news").hasRole("REGISTERED_USER")
                     //Доступ разрешен всем пользователей
                     .antMatchers("/", "/resources/**").permitAll()
                 //Все остальные страницы требуют аутентификации
@@ -46,7 +46,10 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                     .logout()
                     .permitAll()
-                    .logoutSuccessUrl("/");
+                    .logoutSuccessUrl("/")
+                    .deleteCookies("JSESSIONID")
+                .and()
+                .rememberMe().key("uniqueAndSecret").tokenValiditySeconds(30);
     }
 
     @Autowired
