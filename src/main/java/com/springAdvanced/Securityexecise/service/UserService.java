@@ -5,7 +5,6 @@ import com.springAdvanced.Securityexecise.entity.Role;
 import com.springAdvanced.Securityexecise.entity.User;
 import com.springAdvanced.Securityexecise.repository.RoleRepository;
 import com.springAdvanced.Securityexecise.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,14 +19,22 @@ import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
+
     @PersistenceContext
-    private EntityManager em;
-    @Autowired
+    private EntityManager entityManager;
+
+    final
     UserRepository userRepository;
-    @Autowired
+    final
     RoleRepository roleRepository;
-    @Autowired
+    final
     BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -71,7 +78,7 @@ public class UserService implements UserDetailsService {
     }
 
     public List<User> usergtList(Long idMin) {
-        return em.createQuery("SELECT u FROM User u WHERE u.id > :paramId", User.class)
+        return entityManager.createQuery("SELECT u FROM User u WHERE u.id > :paramId", User.class)
                 .setParameter("paramId", idMin).getResultList();
     }
 }
